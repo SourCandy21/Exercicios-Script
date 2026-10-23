@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercício 2 — Reserva de Hotel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+    <div class="container py-4">
+      <h1 class="mb-4">Reserva de Hotel</h1>
+      <form id="formHotel" class="card p-4 shadow-sm">
+        <div class="mb-3">
+          <label for="hospede" class="form-label">Nome do hóspede</label>
+          <input
+            type="text"
+            id="hospede"
+            class="form-control"
+            required
+            maxlength="50"
+          />
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="entrada" class="form-label">Data de entrada</label>
+            <input type="date" id="entrada" class="form-control" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="saida" class="form-label">Data de saída</label>
+            <input type="date" id="saida" class="form-control" required />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="quarto" class="form-label">Quarto</label>
+          <select id="quarto" class="form-select">
+            <option value="200">Standard (R$ 200,00)</option>
+            <option value="350">Luxo (R$ 350,00)</option>
+            <option value="500">Suíte (R$ 500,00)</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="hospedes" class="form-label">Número de hóspedes</label>
+          <input
+            type="number"
+            id="hospedes"
+            class="form-control"
+            min="1"
+            max="4"
+            value="1"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Opcionais</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="cafe" />
+            <label class="form-check-label" for="cafe"
+              >Café da manhã (R$ 30,00 por hóspede e diária)</label
+            >
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="estacionamento"
+            />
+            <label class="form-check-label" for="estacionamento"
+              >Estacionamento (R$ 20,00 por diária)</label
+            >
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="obs" class="form-label">Observações</label>
+          <textarea id="obs" class="form-control" maxlength="200"></textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" id="btnCalcular" class="btn btn-primary">
+            Calcular Reserva
+          </button>
+          <button type="button" id="btnLimpar" class="btn btn-secondary">
+            Limpar
+          </button>
+        </div>
+      </form>
+
+      <h2 class="mt-5">Tabela de Preços</h2>
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Quarto</th>
+            <th>Valor por diária</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Standard</td>
+            <td>R$ 200,00</td>
+          </tr>
+          <tr>
+            <td>Luxo</td>
+            <td>R$ 350,00</td>
+          </tr>
+          <tr>
+            <td>Suíte</td>
+            <td>R$ 500,00</td>
+          </tr>
+          <tr>
+            <td>Café da manhã</td>
+            <td>R$ 30,00 por hóspede/diária</td>
+          </tr>
+          <tr>
+            <td>Estacionamento</td>
+            <td>R$ 20,00 por diária</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      document.getElementById("btnCalcular").addEventListener("click", () => {
+        const hospede = document.getElementById("hospede");
+        if (!hospede.checkValidity()) {
+          hospede.reportValidity();
+          return;
+        }
+        const entrada = document.getElementById("entrada").value;
+        const saida = document.getElementById("saida").value;
+        if (!entrada || !saida) {
+          alert("Informe as datas");
+          return;
+        }
+        const d1 = new Date(entrada);
+        const d2 = new Date(saida);
+        if (d2 <= d1) {
+          alert("Data de saída deve ser posterior à entrada");
+          return;
+        }
+        const diarias = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+        const precoQuarto = parseFloat(document.getElementById("quarto").value);
+        const numHospedes = parseInt(
+          document.getElementById("hospedes").value,
+          10,
+        );
+        let total = diarias * precoQuarto;
+        if (document.getElementById("cafe").checked)
+          total += diarias * numHospedes * 30;
+        if (document.getElementById("estacionamento").checked)
+          total += diarias * 20;
+        alert(
+          "Hóspede: " +
+            hospede.value +
+            "\nDiárias: " +
+            diarias +
+            "\nTotal: R$ " +
+            total.toFixed(2),
+        );
+      });
+      document.getElementById("btnLimpar").addEventListener("click", () => {
+        document.getElementById("formHotel").reset();
+      });
+    </script>
+  </body>
+</html>

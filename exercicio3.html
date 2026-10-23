@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercício 3 — Personalização de Camisetas</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+    .camiseta {
+      width: 260px;
+      height: 300px;
+      clip-path: polygon(31% 0%, 69% 0%, 100% 20%, 85% 37%, 77% 30%, 77% 100%, 23% 100%, 23% 30%, 15% 37%, 0% 20%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      margin: 0 auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,.2);
+      transition: background-color .3s;
+    }
+      .camiseta span {
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container py-4">
+      <h1 class="mb-4">Personalização de Camisetas</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <form id="formCamiseta" class="card p-4 shadow-sm">
+            <div class="mb-3">
+              <label for="cliente" class="form-label">Nome do cliente</label>
+              <input
+                type="text"
+                id="cliente"
+                class="form-control"
+                maxlength="40"
+                placeholder="Digite seu nome"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="texto" class="form-label">Texto da camiseta</label>
+              <input
+                type="text"
+                id="texto"
+                class="form-control"
+                maxlength="25"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="tamanho" class="form-label">Tamanho</label>
+              <select id="tamanho" class="form-select">
+                <option>P</option>
+                <option>M</option>
+                <option>G</option>
+                <option>GG</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="cor" class="form-label">Cor da camiseta</label>
+              <input
+                type="color"
+                id="cor"
+                class="form-control form-control-color"
+                value="#ffffff"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Estampa</label>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="estampa"
+                  id="frente"
+                  value="15"
+                  checked
+                />
+                <label class="form-check-label" for="frente"
+                  >Frente (R$ 15,00)</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="estampa"
+                  id="frentecostas"
+                  value="25"
+                />
+                <label class="form-check-label" for="frentecostas"
+                  >Frente e costas (R$ 25,00)</label
+                >
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="fonte" class="form-label"
+                >Tamanho da fonte: <span id="fonteVal">20</span>px</label
+              >
+              <input
+                type="range"
+                id="fonte"
+                class="form-range"
+                min="12"
+                max="40"
+                value="20"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="imagem" class="form-label">Imagem</label>
+              <input
+                type="file"
+                id="imagem"
+                class="form-control"
+                accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+              />
+            </div>
+            <div class="d-flex gap-2">
+              <button type="button" id="btnVisualizar" class="btn btn-primary">
+                Visualizar
+              </button>
+              <button type="button" id="btnCalcular" class="btn btn-success">
+                Calcular Preço
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+          <div id="camiseta" class="camiseta" style="background-color: #ffffff">
+            <span id="previewTexto" style="font-size: 20px">Texto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const fonte = document.getElementById("fonte");
+      const fonteVal = document.getElementById("fonteVal");
+      fonte.addEventListener("input", () => {
+        fonteVal.textContent = fonte.value;
+      });
+
+      document.getElementById("btnVisualizar").addEventListener("click", () => {
+        const cor = document.getElementById("cor").value;
+        const texto = document.getElementById("texto").value;
+        const size = document.getElementById("fonte").value;
+        const camiseta = document.getElementById("camiseta");
+        camiseta.style.backgroundColor = cor;
+        const preview = document.getElementById("previewTexto");
+        preview.textContent = texto || "Texto";
+        preview.style.fontSize = size + "px";
+      });
+
+      document.getElementById("btnCalcular").addEventListener("click", () => {
+        const estampa = parseFloat(
+          document.querySelector('input[name="estampa"]:checked').value,
+        );
+        const total = 45 + estampa;
+        alert("Preço total: R$ " + total.toFixed(2));
+      });
+    </script>
+  </body>
+</html>
